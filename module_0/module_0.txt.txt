@@ -1,0 +1,52 @@
+def game_core_v1(number):# мой алгоритм (вариант 1) В среднем определяет заданное число за 21 попытку.
+    count = 0
+    predict = 0
+    range_limit_1 = np.random.randint(1,21) # разбиваем на интервалы. я разбил на пять интервалов, но чем интервалов больше,
+    range_limit_2 = np.random.randint(21,41) # тем быстрее программа угадает число.
+    range_limit_3 = np.random.randint(41,61)
+    range_limit_4 = np.random.randint(61,81)
+    range_limit_5 = np.random.randint(81,101)
+    while number != predict: # этот цикл определяет к какому интервалу относится заданное машиной число 
+        count += 1           # и перебирает значения в пределах этого интервала
+        if number <= range_limit_1:
+            predict = np.random.randint(1,range_limit_1+1)
+        elif range_limit_1 < number <= range_limit_2:
+            predict = np.random.randint(range_limit_1+1,range_limit_2+1)
+        elif range_limit_2 < number <= range_limit_3:
+            predict = np.random.randint(range_limit_2+1,range_limit_3+1)
+        elif range_limit_3 < number <= range_limit_4:
+            predict = np.random.randint(range_limit_3+1,range_limit_4+1)
+        elif range_limit_4 < number <= range_limit_5:
+            predict = np.random.randint(range_limit_4+1,range_limit_5+1)    
+        else:
+            predict = np.random.randint(range_limit_5+1,101)
+    print(f"Вы отгадали заданное число {number} за {count} попыток.")
+    return(count)
+
+def game_core_v2(number):# алгоритм из учебника
+    count = 1
+    predict = np.random.randint(1,101)
+    while number != predict:
+        count += 1
+        if number > predict: 
+            predict += 1
+        elif number < predict: 
+            predict -= 1
+    print(f"Вы отгадали заданное число {number} за {count} попыток.") # выход из цикла, если угадали
+    return(count)
+    
+def average_attempt(game_core):# функция считающая среднее число попыток
+    count_ls = []
+    i=0
+    average_attempt = 0
+    for i in range(1,1001):
+        count_ls.append(game_core(number))
+    average_attempt = int(np.mean(count_ls))
+    print(f"Ваш алгоритм угадывает число в среднем за {average_attempt} попыток")
+    
+import numpy as np                 # здесь машина задает число, которое нужно отгадать
+number = np.random.randint(1,101)
+
+game_core_v1(number) # вызываем функцию game_core_v1(number) отгадывающую заданное число
+
+average_attempt(game_core_v1) # вызываем функцию average_attempt(game_core_v1) считающую среднее число попыток
